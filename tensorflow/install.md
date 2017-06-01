@@ -28,3 +28,8 @@ $ python
 >>> sess = tf.Session()
 >>> print(sess.run(hello))
 ```
+
+To deactivate the environment
+```
+(tensorflow)$ deactivate 
+```
