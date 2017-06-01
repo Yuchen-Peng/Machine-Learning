@@ -1,6 +1,6 @@
 It is recommended to intstall the tensorflow package via virtual environment from conda. 
 
-Create a conda environment named ｀tensorflow｀
+Create a conda environment named `tensorflow`
 
 ```
 conda create -n tensorflow
