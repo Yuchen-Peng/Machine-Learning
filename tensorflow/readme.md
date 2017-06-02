@@ -57,6 +57,7 @@ print(sess.run(loss, {x:[1,2,3,4], y:[0,-1,-2,-3]}))
 '''
 Improve the error by manually assigning new values to the parameters W and b
 '''
+
 fixW = tf.assign(W, [-1.]) # this define a new node, passing new value to the variable W
 fixb = tf.assign(b, [1.])
 sess.run([fixW, fixb]) # run the nodes so they are given the values
