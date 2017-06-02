@@ -1,6 +1,8 @@
 # Tensorflow
 ```python
 import tensorflow as tf
+import numpy as np
+import pandas as pd
 ```
 Data are stored as tensor in Tensorflow. 
 
