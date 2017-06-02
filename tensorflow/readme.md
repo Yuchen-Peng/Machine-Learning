@@ -4,7 +4,13 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 ```
-Data are stored as tensor in Tensorflow. 
+Data are stored as tensor in Tensorflow, e.g. 
+```python
+3 # a rank 0 tensor; this is a scalar with shape []
+[1. ,2., 3.] # a rank 1 tensor; this is a vector with shape [3]
+[[1., 2., 3.], [4., 5., 6.]] # a rank 2 tensor; a matrix with shape [2, 3]
+[[[1., 2., 3.]], [[7., 8., 9.]]] # a rank 3 tensor with shape [2, 1, 3]
+```
 
 In Tensorflow, the basic elements are **node**. A node is an operation that takes some input tensors and yields an output tensor. Connecting various nodes gives a computational **graph**. One can start a **session** to run through the computational graph to provide the result.
 
