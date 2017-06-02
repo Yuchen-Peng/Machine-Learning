@@ -71,20 +71,41 @@ fixb = tf.assign(b, [1.])
 sess.run([fixW, fixb]) # run the nodes so they are given the values
 print(sess.run(loss, {x:[1,2,3,4], y:[0,-1,-2,-3]}))
 >>> 0.0
+```
 
-'''
-Let's train the model instead of doing everything manually
-'''
+Let's train the model instead of doing everything manually. Start from zero:
+
+```python
+
+# Model parameters
+W = tf.Variable([.3], tf.float32)
+b = tf.Variable([-.3], tf.float32)
+
+# Model input and output
+x = tf.placeholder(tf.float32)
+linear_model = W * x + b
+y = tf.placeholder(tf.float32)
+
+# loss
+loss = tf.reduce_sum(tf.square(linear_model - y)) # L2 loss
+
+# optimizer
 optimizer = tf.train.GradientDescentOptimizer(0.01)
 train = optimizer.minimize(loss)
 
-sess.run(init) # reset values to incorrect defaults.
+# training data
+x_train = [1,2,3,4]
+y_train = [0,-1,-2,-3]
+
+# training loop
+init = tf.global_variables_initializer()
+sess = tf.Session()
+sess.run(init) # reset values to wrong
 for i in range(1000):
-  sess.run(train, {x:[1,2,3,4], y:[0,-1,-2,-3]})
+  sess.run(train, {x:x_train, y:y_train})
 
-print(sess.run([W, b]))
->>> [array([-0.9999969], dtype=float32), array([ 0.99999082], dtype=float32)] # the parameter value
-
-print(sess.run(loss, {x:[1,2,3,4], y:[0,-1,-2,-3]})) # the error with the new parameter values 
->>> 5.69997e-11
+# evaluate training accuracy
+curr_W, curr_b, curr_loss  = sess.run([W, b, loss], {x:x_train, y:y_train})
+print("W: %s b: %s loss: %s"%(curr_W, curr_b, curr_loss))
+>>> W: [-0.9999969] b: [ 0.99999082] loss: 5.69997e-11
 ```
