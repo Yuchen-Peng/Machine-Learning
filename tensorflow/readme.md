@@ -109,3 +109,68 @@ curr_W, curr_b, curr_loss  = sess.run([W, b, loss], {x:x_train, y:y_train})
 print("W: %s b: %s loss: %s"%(curr_W, curr_b, curr_loss))
 >>> W: [-0.9999969] b: [ 0.99999082] loss: 5.69997e-11
 ```
+
+## Using `tf.contrib.learn`
+
+Now we use the Tensorflow ML library `tf.contrib.learn` for the linear model build. 
+
+```python
+# Declare list of features. 
+features = [tf.contrib.layers.real_valued_column("x", dimension=1)] # In this case only one real-valued feature. 
+
+# Define the estimator; in this case use a linear regressor
+estimator = tf.contrib.learn.LinearRegressor(feature_columns=features)
+
+# Use `numpy_input_fn` to set up training dataset. 
+# We have to tell the function how big the data size is (batch_size) 
+# and how many times to go through the input data at most before stopping (num_epochs)
+x = np.array([1., 2., 3., 4.])
+y = np.array([0., -1., -2., -3.])
+input_fn = tf.contrib.learn.io.numpy_input_fn({"x":x}, y, batch_size=4,
+                                              num_epochs=1000)
+
+# by pass the training data `input_fn` and steps to the estimator.fit() method, the estimator iterates through the training data multiple times.
+# if steps > num_epochs, an "out of data" exception will be raised. 
+estimator.fit(input_fn=input_fn, steps=1000)
+
+# Here we evaluate how well our model did. 
+print(estimator.evaluate(input_fn=input_fn))
+>>> {'global_step': 1000, 'loss': 1.9650059e-11}
+```
+
+We can pass a customerized model to `tf.contrib.learn`, by passing the defined model to the `tf.contrib.learn.Estimator` method.
+
+```python
+
+def model(features, labels, mode):
+  # Build a linear model and predict values
+  W = tf.get_variable("W", [1], dtype=tf.float64)
+  b = tf.get_variable("b", [1], dtype=tf.float64)
+  pred = W*features['x'] + b
+  # Graph for the Loss term
+  loss = tf.reduce_sum(tf.square(pred - labels))
+  # Graph for Training 
+  global_step = tf.train.get_global_step()
+  optimizer = tf.train.GradientDescentOptimizer(0.01)
+  train = tf.group(optimizer.minimize(loss),
+                   tf.assign_add(global_step, 1))
+  # Output everything defined using ModelFnOps() method
+  return tf.contrib.learn.ModelFnOps(
+      mode=mode, predictions=pred,
+      loss=loss,
+      train_op=train)
+
+#Pass the customerized model to estimator
+estimator = tf.contrib.learn.Estimator(model_fn=model)
+# define our data set
+x = np.array([1., 2., 3., 4.])
+y = np.array([0., -1., -2., -3.])
+input_fn = tf.contrib.learn.io.numpy_input_fn({"x": x}, y, 4, num_epochs=1000)
+
+# train
+estimator.fit(input_fn=input_fn, steps=1000)
+# evaluate our model
+print(estimator.evaluate(input_fn=input_fn, steps=10))
+```
+
+
