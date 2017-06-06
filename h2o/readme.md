@@ -1,3 +1,3 @@
-H2O
+# H2O
 
-code for H2O, including GBM, classification, clustering
+code for ML using H2O, including GBM, classification, clustering
