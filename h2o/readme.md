@@ -8,9 +8,11 @@ code for ML using H2O, including GBM, classification, clustering
 ```python
 df = h2o.import_file(path="~/data.csv")
 
-train = df.drop("ID")
+build = df.drop("ID")
 
-h2o.exportFile(df, path="~/result.csv")
+train,test,valid = build.split_frame(ratios=[.6, .2]) # split
+
+h2o.exportFile(build, path="~/result.csv")
 ```
 
 ## Build a GBM
@@ -21,15 +23,15 @@ model = H2OGradientBoostingEstimator(distribution="bernoulli",
                                    learn_rate=0.01)
 model.train(x = list_of_predictors, 
           y = target, 
-          training_frame  = df_train,
-          validation_frame= df_valid)
+          training_frame  = train,
+          validation_frame= valid)
           
 # predicting & performance on test file
-model_pred = model.predict(df_test)
+model_pred = model.predict(test)
 print("GBM predictions: ")
 model_pred.head()
 
-model_perf = model.model_performance(air_test)
+model_perf = model.model_performance(test)
 print("GBM performance: ")
 model_perf.show()
 ```
