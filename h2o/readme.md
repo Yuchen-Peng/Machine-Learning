@@ -13,11 +13,8 @@ train = df.drop("ID")
 h2o.exportFile(df, path="~/result.csv")
 ```
 
+## Build a GBM
 ```python
-'''
-Build a GBM
-'''
-
 model = H2OGradientBoostingEstimator(distribution="bernoulli", 
                                    ntrees=100, 
                                    max_depth=3, 
