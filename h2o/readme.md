@@ -6,6 +6,17 @@ code for ML using H2O, including GBM, classification, clustering
 ## H2O basics
 
 ```python
+import h2o
+import pandas as pd
+import seaborn as sns
+import imp
+import math
+import numpy as np
+
+h2o.init()
+```
+
+```python
 df = h2o.import_file(path="~/data.csv")
 
 build = df.drop("ID")
