@@ -26,9 +26,23 @@ fig, ax1 = plt.subplots()
 fig.tight_layout()
 ax1.plot(liftchart['Bucket'], liftchart['Avg_target'], 'r-')
 ax1.set_xlabel('Model Bucket')
-ax1.set_ylabel('Average Prediction',color='r')
+ax1.set_ylabel('Average Target',color='r')
 ax1.tick_params('y', colors='r')
-ax1.xaxis.set_ticks(np.arange(min(liftchart['Bucket']), max(liftchart['Bucket'])+1, 5.0))
+# if we want to plot two models performance to compare
+liftchart_m1 = liftchart_bin(lift_m1,50)
+liftchart_m2 = liftchart_bin(lift_m2,50)
+fig, ax1 = plt.subplots()
+fig.tight_layout()
+ax1.plot(liftchart_m1['Bucket'], liftchart_m1['Avg_target'], 'r-',label='M1')
+ax1.set_xlabel('Model Bucket')
+ax1.set_ylabel('Average Target',color='r')
+ax1.tick_params('y', colors='r')
+ax2 = ax1.twinx()
+ax2.plot(liftchart_m2['Bucket'], liftchart_m2['Avg_target'], 'b-',label='M2')
+ax2.legend(loc='upper right')
+ax1.legend(loc='upper left')
+ax2.set_ylabel('Average Target',color='b')
+
 
 # R2 by model score bucket
 def R2_bin(lift,nbins=20,predict='Prediction',target=target):
