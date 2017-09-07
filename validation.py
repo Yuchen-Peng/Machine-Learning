@@ -24,7 +24,7 @@ def liftchart_bin(lift,nbins=20,predict='Prediction',target=target):
 liftchart = liftchart_bin(lift,50)
 fig, ax1 = plt.subplots()
 fig.tight_layout()
-ax1.plot(liftchart['Bucket'], liftchart['Avg_predict'], 'r-')
+ax1.plot(liftchart['Bucket'], liftchart['Avg_target'], 'r-')
 ax1.set_xlabel('Model Bucket')
 ax1.set_ylabel('Average Prediction',color='r')
 ax1.tick_params('y', colors='r')
