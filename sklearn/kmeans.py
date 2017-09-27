@@ -17,4 +17,14 @@ build_X['Cluster'] = cluster
 # the centroid for each cluster
 cluster_center = pd.DataFrame(data = kmeans.cluster_centers_, columns = features)
 
+# unscale the centroid coordinates
+def unscale(x,col):
+    y = x*(build_X_clean[col].max()-build_X_clean[col].min())+build_X_clean[col].min()
+    return y
+
+cluster_center_unscale =  cluster_center.copy()
+for col in cluster_center.columns.tolist():
+    for i in range(10):
+        cluster_center_unscale[col].iloc[i] = round(unscale(cluster_center[col].iloc[i],col),2)
+
 # Test the optimal cluster
