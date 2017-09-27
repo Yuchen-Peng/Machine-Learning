@@ -14,4 +14,7 @@ kmeans.fit(build_X_normalized)
 cluster = kmeans.predict(build_X_normalized)
 build_X['Cluster'] = cluster
 
+# the centroid for each cluster
+cluster_center = pd.DataFrame(data = kmeans.cluster_centers_, columns = features)
+
 # Test the optimal cluster
