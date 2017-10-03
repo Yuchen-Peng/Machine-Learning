@@ -100,6 +100,16 @@ def cum_gain(predict,true,nbins,threshold):
 pred_x3,pred_y3 = cum_gain(predict_test,test_y,bins,threshold_value)
 base_x3,base_y3 = cum_gain(benchmark_test,test_y,bins,threshold_value)
 
+plt.figure(figsize=(10,8))
+plt.plot(bins-np.array(base_x3),base_y3,color="purple",label="Benchmark")
+plt.plot(bins-np.array(pred_x3),prob_y3,color="blue",label="Predict")
+plt.plot([bins,1],[0,100],label="Random",color="grey",linestyle ="--")
+plt.xlim(bins, 0)
+plt.xlabel("Score Bucket")
+plt.ylabel("Premium Cum Gain Chart")
+plt.legend(loc='lower right')
+plt.title("Cum Gain Chart for over-threshold population")
+
 # cumulative gain chart in the highest buckets
 def cum_gain_top(predict,true,nbins,threshold,top_cut):
     x_indx = range(1,nbins+1)
@@ -119,7 +129,16 @@ def cum_gain_top(predict,true,nbins,threshold,top_cut):
     return x_indx,y_indx_2
 
 pred_x4,pred_y4 = cum_gain_top(predict_test,test_y,bins_for_top,threshold_value,tail_cut)
+base_x4,base_y4 = cum_gain_top(base_y,test_y,bins_for_top,threshold_value,tail_cut)
 
+plt.figure(figsize=(10,8))
+plt.plot(bins-np.array(base_x4),base_y4,color="purple",label="Benchmark")
+plt.plot(bins-np.array(pred_x4),pred_y4,color="blue",label="Predict")
+plt.xlim(60, 40)
+plt.xlabel("Score Bucket")
+plt.ylabel("Premium Cum Gain Chart")
+plt.legend(loc='upper left')
+plt.title("Cum Gain Chart for Premium for top 20%")
 
 # Somers'D 
 def dollar_somersd(score,target, bins=500):
